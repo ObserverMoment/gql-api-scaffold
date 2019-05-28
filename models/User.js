@@ -9,6 +9,9 @@ export default (sequelize, DataTypes) => {
       unique: true
     },
     password: DataTypes.STRING
+  }, {
+    timestamps: true,
+    paranoid: true
   })
 
   User.associate = (models) => {

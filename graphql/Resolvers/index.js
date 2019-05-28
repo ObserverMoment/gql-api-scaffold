@@ -1,10 +1,11 @@
-export default {
-  Query: {
-    users: (parent, args, { models }, info) => models.User.findAll(),
-    items: (parent, args, { models }, info) => models.Item.findAll()
-  },
-  Mutation: {
-    createUser: (parent, args, { models }, info) => models.User.create(args),
-    createItem: (parent, args, { models }, info) => models.Item.create(args)
+import User from './User'
+import Item from './Item'
+
+const resolvers = [ User, Item ]
+
+export default resolvers.reduce((a, b) => {
+  return {
+    Query: { ...a.Query, ...b.Query },
+    Mutation: { ...a.Mutation, ...b.Mutation }
   }
-}
+}, { Query: {}, Mutation: {} })

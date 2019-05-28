@@ -6,6 +6,9 @@ export default (sequelize, DataTypes) => {
     description: {
       type: DataTypes.STRING
     }
+  }, {
+    timestamps: true,
+    paranoid: true
   })
 
   Item.associate = (models) => {

@@ -1,8 +1,15 @@
-import db from '../config/db' // Instance of sequelize connected db.
+import Sequelize from 'sequelize'
+
+const sequelize = new Sequelize(
+  process.env.DATABASE || 'scaffold-api-db',
+  process.env.DATABASE_USER || 'postgres',
+  process.env.DATABASE_PASSWORD || 'postgres',
+  { dialect: 'postgres' }
+)
 
 const models = {
-  User: db.import('./User'),
-  Item: db.import('./Item')
+  User: sequelize.import('./User'),
+  Item: sequelize.import('./Item')
 }
 
 Object.keys(models).forEach(key => {
@@ -10,5 +17,7 @@ Object.keys(models).forEach(key => {
     models[key].associate(models)
   }
 })
+
+export { sequelize }
 
 export default models

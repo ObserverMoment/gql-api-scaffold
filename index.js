@@ -1,24 +1,34 @@
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
+import { makeExecutableSchema } from 'graphql-tools'
+
+// Conneted models
+import models, { sequelize } from './models'
 
 // GraphQL
 import typeDefs from './GraphQL/Schema'
 import resolvers from './GraphQL/Resolvers'
 
-// DB
-import db from './config/db'
-import models from './models'
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers
+})
 
 const PORT = process.env.PORT || 4000
 
 const init = async () => {
   try {
-    await db.authenticate()
-    await db.sync()
+    await sequelize.authenticate()
+    await sequelize.sync()
 
     const app = express()
 
-    const server = new ApolloServer({ typeDefs, resolvers, context: { models } })
+    const server = new ApolloServer({
+      schema,
+      context: { models },
+      logger: { log: e => console.log(e) }
+    })
+
     server.applyMiddleware({ app })
 
     app.listen({ port: PORT }, () =>

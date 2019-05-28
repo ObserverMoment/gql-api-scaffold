@@ -1,26 +1,13 @@
-import { gql } from 'apollo-server-express'
+import { User } from './User'
+import { Item } from './Item'
 
-export default gql`
+const Schema = `
   type Query {
-    users: [User]!
-    items: [Item]!
+    _empty: String
   }
-
-  type User {
-    id: ID!,
-    username: String,
-    email: String,
-    roleType: String
-  }
-
-  type Item {
-    id: ID!,
-    name: String,
-    description: String
-  }
-
   type Mutation {
-    createUser(username: String, email: String, password: String): User!
-    createItem(name: String, description: String, userId: ID!): Item!
+    _empty: String
   }
 `
+
+export default [ Schema, User, Item ]
